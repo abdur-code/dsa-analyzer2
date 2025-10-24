@@ -17,7 +17,7 @@ export const signup = async (req, res, next) => {
     const newUser = await User.create({ username, email, password: hashedPassword });
 
     const token = generateToken(newUser._id);
-    res.cookie("token", token, { httpOnly: true, sameSite: "lax" });
+    res.cookie("token", token, { httpOnly: true, secure: true, sameSite: "None" });
 
     res.status(201).json({
       message: "User created successfully",
@@ -39,7 +39,7 @@ export const login = async (req, res, next) => {
     if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
 
     const token = generateToken(user._id);
-    res.cookie("token", token, { httpOnly: true, sameSite: "lax" });
+    res.cookie("token", token, { httpOnly: true, secure: true, sameSite: "None" });
 
     res.json({
       message: "Login successful",
