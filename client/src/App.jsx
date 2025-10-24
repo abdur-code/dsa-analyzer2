@@ -1,35 +1,61 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+import Navbar from "./components/Navbar";
+import PrivateRoute from "./components/PrivateRoute";
+
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import Analyze from "./pages/Analyze";
+import Analysis from "./pages/Analysis";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    // Verify user token on app load
+    fetch(`${import.meta.env.VITE_API_URL}/api/auth/verify`, {
+      credentials: "include",
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.authenticated) setUser({ id: data.userId });
+      });
+  }, []);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <Router>
+      <div className="font-figtree">
+        <Navbar user={user} setUser={setUser} />
+        <div className="pt-20">
+          <Routes>
+            <Route path="/" element={<Home user={user} />} />
+            <Route path="/login" element={<Login setUser={setUser} />} />
+            <Route path="/signup" element={<Signup setUser={setUser} />} />
+
+            {/* Protected Routes */}
+            <Route
+              path="/analyze"
+              element={
+                <PrivateRoute user={user}>
+                  <Analyze user={user} />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/analysis"
+              element={
+                <PrivateRoute user={user}>
+                  <Analysis />
+                </PrivateRoute>
+              }
+            />
+          </Routes>
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </Router>
+  );
 }
 
-export default App
+export default App;
