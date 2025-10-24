@@ -9,6 +9,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Analyze from "./pages/Analyze";
 import Analysis from "./pages/Analysis";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -48,6 +49,14 @@ function App() {
               element={
                 <PrivateRoute user={user}>
                   <Analysis />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/dashboard"
+              element={
+                <PrivateRoute user={user}>
+                  <Dashboard user={user} />
                 </PrivateRoute>
               }
             />

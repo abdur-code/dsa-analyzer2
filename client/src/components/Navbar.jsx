@@ -20,9 +20,15 @@ const Navbar = ({ user, setUser }) => {
         DSA Analyzer
       </Link>
 
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-6">
         {user ? (
           <>
+            <Link to="/dashboard" className="text-white hover:text-red-400 transition">
+              Dashboard
+            </Link>
+            <Link to="/analyze" className="text-white hover:text-red-400 transition">
+              Analyze
+            </Link>
             <span className="text-white">Hello, {user.username}</span>
             <button
               onClick={handleLogout}
