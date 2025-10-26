@@ -26,7 +26,7 @@ export const analyzeCode = async (req, res, next) => {
     // Build prompt for structured JSON analysis
     const prompt = `
 You are an expert in Data Structures and Algorithms.
-Analyze the following ${language} code for the given problem.
+Analyze the following ${language} code for the given problem and provide scores out of 100.
 
 ### Problem
 ${questionTitle}
